@@ -1,0 +1,270 @@
+{
+ "features": [
+  "state",
+  "account_length",
+  "area_code",
+  "international_plan",
+  "voice_mail_plan",
+  "total_day_calls",
+  "total_day_charge",
+  "total_eve_calls",
+  "total_eve_charge",
+  "total_night_calls",
+  "total_night_charge",
+  "total_intl_charge",
+  "total_intl_calls_log",
+  "binned_customer_service_calls"
+ ],
+ "state_enc": {
+  "AK": 0.07317073170731707,
+  "AL": 0.09090909090909091,
+  "AR": 0.17777777777777778,
+  "AZ": 0.07017543859649122,
+  "CA": 0.2857142857142857,
+  "CO": 0.125,
+  "CT": 0.1896551724137931,
+  "DC": 0.06666666666666667,
+  "DE": 0.1568627450980392,
+  "FL": 0.125,
+  "GA": 0.175,
+  "HI": 0.023255813953488372,
+  "IA": 0.09090909090909091,
+  "ID": 0.15,
+  "IL": 0.10416666666666667,
+  "IN": 0.16071428571428573,
+  "KS": 0.18518518518518517,
+  "KY": 0.12244897959183673,
+  "LA": 0.09523809523809523,
+  "MA": 0.12962962962962962,
+  "MD": 0.26785714285714285,
+  "ME": 0.16981132075471697,
+  "MI": 0.22807017543859648,
+  "MN": 0.1746031746031746,
+  "MO": 0.1320754716981132,
+  "MS": 0.21568627450980393,
+  "MT": 0.21428571428571427,
+  "NC": 0.16981132075471697,
+  "ND": 0.1111111111111111,
+  "NE": 0.06,
+  "NH": 0.1276595744680851,
+  "NJ": 0.2641509433962264,
+  "NM": 0.12244897959183673,
+  "NV": 0.21818181818181817,
+  "NY": 0.1875,
+  "OH": 0.15254237288135594,
+  "OK": 0.1509433962264151,
+  "OR": 0.12280701754385964,
+  "PA": 0.20588235294117646,
+  "RI": 0.08333333333333333,
+  "SC": 0.2608695652173913,
+  "SD": 0.125,
+  "TN": 0.07317073170731707,
+  "TX": 0.21052631578947367,
+  "UT": 0.13559322033898305,
+  "VA": 0.06896551724137931,
+  "VT": 0.09090909090909091,
+  "WA": 0.22448979591836735,
+  "WI": 0.07575757575757576,
+  "WV": 0.10112359550561797,
+  "WY": 0.08333333333333333
+ },
+ "area_enc": {
+  "415": 0.5011252813203301,
+  "408": 0.2535633908477119,
+  "510": 0.245311327831958
+ },
+ "csc_enc": {
+  "Low": 0.11063627730294397,
+  "Medium": 0.21041666666666667,
+  "High": 0.65
+ },
+ "scaler": {
+  "account length": {
+   "center": 101.0,
+   "scale": 53.0
+  },
+  "total day calls": {
+   "center": 101.0,
+   "scale": 27.0
+  },
+  "total day charge": {
+   "center": 30.48,
+   "scale": 12.365000000000002
+  },
+  "total eve calls": {
+   "center": 100.0,
+   "scale": 27.0
+  },
+  "total eve charge": {
+   "center": 17.095,
+   "scale": 5.767500000000002
+  },
+  "total night calls": {
+   "center": 100.0,
+   "scale": 27.0
+  },
+  "total night charge": {
+   "center": 9.04,
+   "scale": 3.0500000000000007
+  },
+  "total intl charge": {
+   "center": 2.78,
+   "scale": 0.9700000000000002
+  },
+  "total_intl_calls_log": {
+   "center": 1.6094379124341003,
+   "scale": 0.5596157879354227
+  }
+ },
+ "states": [
+  "AK",
+  "AL",
+  "AR",
+  "AZ",
+  "CA",
+  "CO",
+  "CT",
+  "DC",
+  "DE",
+  "FL",
+  "GA",
+  "HI",
+  "IA",
+  "ID",
+  "IL",
+  "IN",
+  "KS",
+  "KY",
+  "LA",
+  "MA",
+  "MD",
+  "ME",
+  "MI",
+  "MN",
+  "MO",
+  "MS",
+  "MT",
+  "NC",
+  "ND",
+  "NE",
+  "NH",
+  "NJ",
+  "NM",
+  "NV",
+  "NY",
+  "OH",
+  "OK",
+  "OR",
+  "PA",
+  "RI",
+  "SC",
+  "SD",
+  "TN",
+  "TX",
+  "UT",
+  "VA",
+  "VT",
+  "WA",
+  "WI",
+  "WV",
+  "WY"
+ ],
+ "area_codes": [
+  408,
+  415,
+  510
+ ],
+ "insights": {
+  "base_rate": 0.14491449144914492,
+  "n": 3333,
+  "day_charge_q75": 36.79,
+  "csc_4plus": 0.5168539325842697,
+  "intl_plan_yes": 0.4241486068111455,
+  "intl_plan_no": 0.11495016611295682,
+  "high_day_charge": 0.29256594724220625,
+  "vmail_yes": 0.08676789587852494
+ },
+ "ranges": {
+  "account length": [
+   1.0,
+   243.0
+  ],
+  "total day calls": [
+   0.0,
+   165.0
+  ],
+  "total day charge": [
+   0.0,
+   59.64
+  ],
+  "total eve calls": [
+   0.0,
+   170.0
+  ],
+  "total eve charge": [
+   0.0,
+   30.91
+  ],
+  "total night calls": [
+   33.0,
+   175.0
+  ],
+  "total night charge": [
+   1.04,
+   17.77
+  ],
+  "total intl charge": [
+   0.0,
+   5.4
+  ],
+  "total intl calls": [
+   0.0,
+   20.0
+  ],
+  "customer service calls": [
+   0.0,
+   9.0
+  ]
+ },
+ "examples": {
+  "stable": {
+   "state": "NE",
+   "account length": 139,
+   "area code": 415,
+   "international plan": "no",
+   "voice mail plan": "yes",
+   "total day calls": 96,
+   "total day charge": 23.51,
+   "total eve calls": 79,
+   "total eve charge": 6.85,
+   "total night calls": 83,
+   "total night charge": 7.37,
+   "total intl charge": 2.24,
+   "total intl calls": 8,
+   "customer service calls": 0
+  },
+  "at_risk": {
+   "state": "NH",
+   "account length": 125,
+   "area code": 415,
+   "international plan": "yes",
+   "voice mail plan": "no",
+   "total day calls": 78,
+   "total day charge": 50.73,
+   "total eve calls": 142,
+   "total eve charge": 22.99,
+   "total night calls": 84,
+   "total night charge": 4.83,
+   "total intl charge": 3.29,
+   "total intl calls": 2,
+   "customer service calls": 0
+  }
+ },
+ "test_metrics": {
+  "tn": 561,
+  "fp": 9,
+  "fn": 32,
+  "tp": 65,
+  "roc_auc": 0.9010309278350516
+ }
+}

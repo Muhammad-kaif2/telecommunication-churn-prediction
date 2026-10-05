@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Churn Radar – Customer Churn Prediction</title>
+<meta name="description" content="Predict whether a telecom customer is likely to churn, using a tuned LightGBM model.">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"></span>Churn Radar</div>
+    <span class="api-pill" id="apiPill"><span class="dot"></span><span id="apiText">Connecting…</span></span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="intro">
+    <p class="kicker">Telecom retention · LightGBM classifier</p>
+    <h1>Will this customer stay?</h1>
+    <p class="lede">Enter an account's plan and usage details to estimate the probability that the customer leaves. Use it to decide who deserves a retention call first.</p>
+  </section>
+
+  <div class="layout">
+    <form id="form" class="card form" novalidate>
+      <div class="card-head">
+        <h2>Customer profile</h2>
+        <div class="examples">
+          <span>Load example:</span>
+          <button type="button" class="chip" data-example="stable">Stable customer</button>
+          <button type="button" class="chip" data-example="at_risk">At-risk customer</button>
+        </div>
+      </div>
+
+      <fieldset>
+        <legend><span class="n">1</span>Account</legend>
+        <div class="grid g3">
+          <label class="f"><span>State</span>
+            <select id="state" name="state" required><option value="" disabled selected>Select state</option></select>
+            <em class="err" data-err="state"></em></label>
+          <label class="f"><span>Area code</span>
+            <select id="area_code" name="area_code" required>
+              <option value="" disabled selected>Select</option>
+              <option>408</option><option>415</option><option>510</option></select>
+            <em class="err" data-err="area_code"></em></label>
+          <label class="f"><span>Account length <small>days</small></span>
+            <input type="number" id="account_length" name="account_length" min="1" max="500" step="1" inputmode="numeric" placeholder="e.g. 101" required>
+            <i class="hint" data-hint="account length"></i><em class="err" data-err="account_length"></em></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">2</span>Plans &amp; support</legend>
+        <div class="grid g3">
+          <div class="f"><span id="lbl-intl">International plan</span>
+            <div class="seg" role="radiogroup" aria-labelledby="lbl-intl">
+              <label><input type="radio" name="international_plan" value="no" required><b>No</b></label>
+              <label><input type="radio" name="international_plan" value="yes"><b>Yes</b></label>
+            </div><em class="err" data-err="international_plan"></em></div>
+          <div class="f"><span id="lbl-vm">Voice mail plan</span>
+            <div class="seg" role="radiogroup" aria-labelledby="lbl-vm">
+              <label><input type="radio" name="voice_mail_plan" value="no" required><b>No</b></label>
+              <label><input type="radio" name="voice_mail_plan" value="yes"><b>Yes</b></label>
+            </div><em class="err" data-err="voice_mail_plan"></em></div>
+          <label class="f"><span>Customer service calls</span>
+            <input type="number" id="customer_service_calls" name="customer_service_calls" min="0" max="50" step="1" inputmode="numeric" placeholder="e.g. 1" required>
+            <i class="hint" data-hint="customer service calls"></i><em class="err" data-err="customer_service_calls"></em></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend><span class="n">3</span>Usage &amp; charges</legend>
+        <div class="usage">
+          <div class="usage-head"><span></span><span>Calls</span><span>Charge</span></div>
+          <div class="usage-row"><b>Day</b>
+            <label class="f"><input type="number" id="total_day_calls" name="total_day_calls" min="0" max="500" step="1" inputmode="numeric" placeholder="100" required aria-label="Total day calls"><em class="err" data-err="total_day_calls"></em></label>
+            <label class="f money"><input type="number" id="total_day_charge" name="total_day_charge" min="0" max="200" step="0.01" inputmode="decimal" placeholder="30.00" required aria-label="Total day charge in dollars"><em class="err" data-err="total_day_charge"></em></label></div>
+          <div class="usage-row"><b>Evening</b>
+            <label class="f"><input type="number" id="total_eve_calls" name="total_eve_calls" min="0" max="500" step="1" inputmode="numeric" placeholder="100" required aria-label="Total evening calls"><em class="err" data-err="total_eve_calls"></em></label>
+            <label class="f money"><input type="number" id="total_eve_charge" name="total_eve_charge" min="0" max="100" step="0.01" inputmode="decimal" placeholder="17.00" required aria-label="Total evening charge in dollars"><em class="err" data-err="total_eve_charge"></em></label></div>
+          <div class="usage-row"><b>Night</b>
+            <label class="f"><input type="number" id="total_night_calls" name="total_night_calls" min="0" max="500" step="1" inputmode="numeric" placeholder="100" required aria-label="Total night calls"><em class="err" data-err="total_night_calls"></em></label>
+            <label class="f money"><input type="number" id="total_night_charge" name="total_night_charge" min="0" max="100" step="0.01" inputmode="decimal" placeholder="9.00" required aria-label="Total night charge in dollars"><em class="err" data-err="total_night_charge"></em></label></div>
+          <div class="usage-row"><b>International</b>
+            <label class="f"><input type="number" id="total_intl_calls" name="total_intl_calls" min="0" max="100" step="1" inputmode="numeric" placeholder="4" required aria-label="Total international calls"><em class="err" data-err="total_intl_calls"></em></label>
+            <label class="f money"><input type="number" id="total_intl_charge" name="total_intl_charge" min="0" max="50" step="0.01" inputmode="decimal" placeholder="2.70" required aria-label="Total international charge in dollars"><em class="err" data-err="total_intl_charge"></em></label></div>
+        </div>
+      </fieldset>
+
+      <div class="actions">
+        <button type="submit" class="go" id="go"><span class="go-label">Predict churn risk</span><span class="spin" aria-hidden="true"></span></button>
+        <button type="button" class="link" id="clear">Clear form</button>
+      </div>
+    </form>
+
+    <aside class="card result" aria-live="polite">
+      <div id="sIdle" class="state">
+        <div class="meter ghost" aria-hidden="true"><div class="track"></div></div>
+        <h2>No prediction yet</h2>
+        <p class="muted">Fill in the profile, or load an example, then press <b>Predict churn risk</b>.</p>
+      </div>
+
+      <div id="sLoad" class="state" hidden>
+        <div class="meter ghost pulse" aria-hidden="true"><div class="track"></div></div>
+        <h2>Scoring…</h2>
+      </div>
+
+      <div id="sRes" class="state" hidden>
+        <p class="kicker">Churn probability</p>
+        <div class="big"><span id="pct">0</span><small>%</small></div>
+        <div class="meter" id="meter" data-level="Low" aria-hidden="true">
+          <div class="track"><div class="fill" id="fill"></div><div class="cut" title="Decision threshold 50%"></div></div>
+          <div class="ticks"><span>0%</span><span>25%</span><span class="t50">50%</span><span>100%</span></div>
+        </div>
+        <p class="verdict" id="verdict"></p>
+        <p class="sub" id="sub"></p>
+        <div id="insights" class="insights"></div>
+        <button type="button" class="link" id="again">New prediction</button>
+      </div>
+
+      <div id="sErr" class="state" hidden>
+        <div class="alert" aria-hidden="true">!</div>
+        <h2 id="errTitle">Something went wrong</h2>
+        <p class="muted" id="errText"></p>
+        <button type="button" class="link" id="errBack">Back to form</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="foot">
+    <p id="modelNote">Model: tuned LightGBM trained on 3,333 telecom customers.</p>
+    <p>A statistical estimate for prioritising outreach, not a certainty about any individual customer.</p>
+  </footer>
+</main>
+<script src="/script.js"></script>
+</body>
+</html>
